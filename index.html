@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="ASCB_LOGO.png">
+    <title>Sign In — Office of the Registrar</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="login.css">
+
+    <!-- Auth logic loads first; if a session already exists,
+         skip straight to the system instead of showing the form. -->
+    <script src="auth.js"></script>
+    <script>ascbRedirectIfLoggedIn();</script>
+</head>
+<body>
+
+    <div class="login-stage">
+        <form class="login-card" id="loginCard" onsubmit="return ascbHandleLogin(event);" autocomplete="off">
+
+            <div class="login-head">
+                <img src="ASCB_LOGO.png" alt="ASCB Logo">
+            </div>
+            
+            <div class="login-error" id="loginError"></div>
+
+            <div class="login-field">
+                <label for="loginUsername">Username</label>
+                <div class="login-input-wrap">
+                    <input
+                        type="text"
+                        id="loginUsername"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                        autofocus
+                    >
+                </div>
+            </div>
+
+            <div class="login-field">
+                <label for="loginPassword">Password</label>
+                <div class="login-input-wrap">
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+                    <button type="button" class="login-toggle-pw" id="loginTogglePw" onclick="ascbTogglePasswordVisibility()">Show</button>
+                </div>
+            </div>
+
+            <div class="login-remember">
+                <input type="checkbox" id="loginRemember">
+                <label for="loginRemember">Keep me signed in on this device</label>
+            </div>
+
+            <button type="submit" class="login-submit" id="loginSubmitBtn">Sign In</button>
+
+            <div class="login-hint">
+                Authorized Registrar Personnel only.
+            </div>
+        </form>
+    </div>
+
+    <div class="login-footer">
+        &copy; Andres Soriano Colleges of Bislig, Inc. — Office of the Registrar 2026
+    </div>
+
+</body>
+</html>
