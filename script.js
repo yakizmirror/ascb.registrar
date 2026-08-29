@@ -2653,7 +2653,10 @@ function clearForm() {
     document.getElementById("academicYear").value = "2026–2027";
     document.getElementById("status").value = "OFFICIALLY ENROLLED";
     document.getElementById("orNumber").value = "";
-    document.getElementById("preparedBy").value = "";
+
+    /* "Prepared By" is auto-credited to the logged-in user,
+       so re-apply it instead of clearing it. */
+    ascbInitPreparedBy();
 
     setToday();
 
