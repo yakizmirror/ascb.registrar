@@ -105,6 +105,40 @@ function ascbInitHeaderSession() {
     if (dashboardNameEl) dashboardNameEl.textContent = ", " + session.displayName;
 }
 
+/* =========================================================
+   "PREPARED BY" AUTO-FILL
+   ---------------------------------------------------------
+   Instead of the operator manually picking who "prepared"
+   the certificate, we credit whoever is actually logged in.
+   Each hardcoded login (by displayName) is mapped to the
+   matching "Prepared by" code already used on the printed
+   certificates.
+
+   NOTE: 3 of these map cleanly (initials + surname). SALUBRE
+   has no obviously-matching option in the original dropdown
+   list ("francelmae" doesn't look like a Salubre), so that
+   pairing below is a guess by elimination — please confirm
+   or correct it.
+   ========================================================= */
+const ASCB_PREPARED_BY_MAP = {
+    "AMPARO": "rbamparo",
+    "CASTILLO": "accastillo",
+    "YASOÑA": "rmyasoña",
+    "SALUBRE": "francelmae"
+};
+
+/* Sets the hidden "Prepared By" field to match the currently
+   logged-in user. Safe to call multiple times (e.g. after
+   Clear Data). If the logged-in user has no mapping, the field
+   is simply left blank. */
+function ascbInitPreparedBy() {
+    const session = ascbGetSession();
+    const field = document.getElementById("preparedBy");
+    if (!session || !field) return;
+
+    field.value = ASCB_PREPARED_BY_MAP[session.displayName] || "";
+}
+
 function ascbConfirmLogout() {
     const overlay = document.getElementById("ascbLogoutModal");
     if (overlay) overlay.classList.add("active");
@@ -117,6 +151,7 @@ function ascbCancelLogout() {
 
 function ascbLogout() {
     ascbClearSession();
+    sessionStorage.removeItem(ASCB_LAST_VIEW_KEY);
     window.location.replace("./");
 }
 
@@ -197,6 +232,8 @@ function ascbTogglePasswordVisibility() {
    in-place as pages — nothing opens as an overlay anymore.
    ========================================================= */
 
+const ASCB_LAST_VIEW_KEY = "ascb_reg_last_view";
+
 function ascbNavigate(view) {
     document.querySelectorAll(".main-nav-link[data-view]").forEach(function (btn) {
         btn.classList.toggle("active", btn.dataset.view === view);
@@ -206,8 +243,27 @@ function ascbNavigate(view) {
         section.classList.toggle("active-view", section.id === view + "View");
     });
 
+    sessionStorage.setItem(ASCB_LAST_VIEW_KEY, view);
+
     ascbToggleSidebar(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* Puts the page back on whichever view the user was last on
+   (Dashboard / Certificates / Form 137), so reloading the page
+   doesn't bounce back to the Dashboard. Call this once, right
+   after the view sections exist in the DOM. */
+function ascbRestoreLastView() {
+    const lastView = sessionStorage.getItem(ASCB_LAST_VIEW_KEY);
+    if (!lastView || lastView === "dashboard") return;
+
+    document.querySelectorAll(".main-nav-link[data-view]").forEach(function (btn) {
+        btn.classList.toggle("active", btn.dataset.view === lastView);
+    });
+
+    document.querySelectorAll(".app-view").forEach(function (section) {
+        section.classList.toggle("active-view", section.id === lastView + "View");
+    });
 }
 
 /* ---------- Actions panel (collapsible, on the Certificates view) ---------- */
