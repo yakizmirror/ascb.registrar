@@ -84,7 +84,7 @@ function ascbClearSession() {
 
 function ascbGuardPage() {
     if (!ascbGetSession()) {
-        window.location.replace("login.html");
+        window.location.replace("index.html");
     }
 }
 
@@ -117,7 +117,7 @@ function ascbCancelLogout() {
 
 function ascbLogout() {
     ascbClearSession();
-    window.location.replace("login.html");
+    window.location.replace("index.html");
 }
 
 
