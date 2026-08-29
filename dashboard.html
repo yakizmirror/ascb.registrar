@@ -434,38 +434,9 @@
                 </div>
 
 
-                <!-- PREPARED BY -->
-                <div class="form-group">
-
-                    <label for="preparedBy">
-                        Prepared By
-                    </label>
-
-                    <select id="preparedBy">
-
-                        <option value="">
-                            Select Admin
-                        </option>
-
-                        <option value="accastillo">
-                            accastillo
-                        </option>
-
-                        <option value="rbamparo">
-                            rbamparo
-                        </option>
-
-                        <option value="rmyasoña">
-                            rmyasoña
-                        </option>
-
-                        <option value="francelmae">
-                            francelmae
-                        </option>
-
-                    </select>
-
-                </div>
+                <!-- PREPARED BY (hidden — auto-credited to the
+                     logged-in user; see ascbInitPreparedBy()) -->
+                <input type="hidden" id="preparedBy" value="">
 
             </div>
 
@@ -1405,7 +1376,11 @@
     </div>
 
 <script src="script.js"></script>
-<script>ascbInitHeaderSession();</script>
+<script>
+    ascbInitHeaderSession();
+    ascbInitPreparedBy();
+    ascbRestoreLastView();
+</script>
 
 </body>
 </html>
